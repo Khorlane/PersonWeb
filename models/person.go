@@ -1,6 +1,9 @@
-// For now, if the is file changes, it must be copied to
+// For now, if the is file changed, it must be copied to
 // C:\Program Files\Go\src\models
-// BEFORE 'go build'
+// BEFORE issuing 'go build' command
+// Or Use 'make' in the PersonWeb folder which copies all files in the 'models' folder whether they changed or not
+//   - You can run make.bat via Command Prompt, but Command Prompt must be RUN AS ADMINISTRATOR
+//   - You can doulbe click the 'make' shortcut
 
 package models
 
