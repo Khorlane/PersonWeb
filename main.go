@@ -63,7 +63,21 @@ func getPersonById(c *gin.Context) {
 }
 
 func addPerson(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "addPerson Called"})
+
+	var json models.Person
+
+	if err := c.ShouldBindJSON(&json); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	success, err := models.AddPerson(json)
+
+	if success {
+		c.JSON(http.StatusOK, gin.H{"message": "Success"})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+	}
 }
 
 func updatePerson(c *gin.Context) {
