@@ -48,8 +48,18 @@ func getPersons(c *gin.Context) {
 }
 
 func getPersonById(c *gin.Context) {
+
 	id := c.Param("id")
-	c.JSON(http.StatusOK, gin.H{"message": "getPersonById " + id +" Called"})
+
+	person, err := models.GetPersonById(id)
+	checkErr(err)
+	// if the name is blank we can assume nothing is found
+	if person.FirstName == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "No Records Found"})
+		return
+	} else {
+		c.JSON(http.StatusOK, gin.H{"data": person})
+	}
 }
 
 func addPerson(c *gin.Context) {
