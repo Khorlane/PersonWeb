@@ -1,6 +1,7 @@
 // PersonWeb
 // By Jeremy Morgan
 // https://www.allhandsontech.com/programming/golang/web-app-sqlite-go/
+// https://github.com/JeremyMorgan/PersonWeb
 // See also: https://practicalgobook.net/posts/go-sqlite-no-cgo/
 
 package main
@@ -110,8 +111,20 @@ func updatePerson(c *gin.Context) {
 }
 
 func deletePerson(c *gin.Context) {
-	id := c.Param("id")
-	c.JSON(http.StatusOK, gin.H{"message": "deletePerson " + id + " Called"})
+
+	personId, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+	}
+
+	success, err := models.DeletePerson(personId)
+
+	if success {
+		c.JSON(http.StatusOK, gin.H{"message": "Success"})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+	}
 }
 
 func options(c *gin.Context) {
