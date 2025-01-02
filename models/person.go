@@ -10,6 +10,7 @@ package models
 import (
 	"database/sql"
 	"strconv"
+  "fmt"
   _ "modernc.org/sqlite"
 )
 
@@ -106,7 +107,35 @@ func AddPerson(newPerson Person) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+  
+  tx.Commit()
 
+	return true, nil
+}
+
+func UpdatePerson(ourPerson Person, id int) (bool, error) {
+
+	tx, err := DB.Begin()
+	if err != nil {
+		return false, err
+	}
+
+	stmt, err := tx.Prepare("UPDATE people SET first_name = ?, last_name = ?, email = ?, ip_address = ? WHERE Id = ?")
+
+	if err != nil {
+		return false, err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(ourPerson.FirstName, ourPerson.LastName, ourPerson.Email, ourPerson.IpAddress, id)
+
+	if err != nil {
+		return false, err
+	}
+
+  fmt.Printf("Commiting Update for id %d\n", id)
+	
 	tx.Commit()
 
 	return true, nil
