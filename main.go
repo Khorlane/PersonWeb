@@ -128,7 +128,14 @@ func deletePerson(c *gin.Context) {
 }
 
 func options(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "options Called"})
+
+	ourOptions := "HTTP/1.1 200 OK\n" +
+		"Allow: GET,POST,PUT,DELETE,OPTIONS\n" +
+		"Access-Control-Allow-Origin: http://locahost:8080\n" +
+		"Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS\n" +
+		"Access-Control-Allow-Headers: Content-Type\n"
+
+	c.String(200, ourOptions)
 }
 
 func checkErr(err error) {
