@@ -1,4 +1,4 @@
-module example.com/personweb
+module personweb
 
 go 1.23.4
 
